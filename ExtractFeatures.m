@@ -7,10 +7,10 @@ eating_frames_file = 'Vinoth/spoon/1503514028875_pick.txt'
 output_path = 'Vinoth/spoon/'
 SeperateEatingAndNonEatingAction(emg_file,imu_file,eating_frames_file,fps,last_ts,last_frame,output_path)
 %use import while reading the data, as we want NAN for missing values
-ea1 = importdata("Vinoth/spoon/EatingAction/EA1.csv")
-ea1(end,end-20:end)'
+ 
+%ea1 = importdata("Vinoth/spoon/EatingAction/EA1.csv")
+%ea1(end,end-20:end)
 
-%%
 function SeperateEatingAndNonEatingAction(emg_file,imu_file,eating_frames_file,fps,last_ts,last_frame,output_path)
     emg_csv = csvread(emg_file)
     imu_csv = csvread(imu_file)
@@ -26,8 +26,8 @@ function SeperateEatingAndNonEatingAction(emg_file,imu_file,eating_frames_file,f
         ea_imu = imu_csv(imu_csv(:,1)>start_frame(i) & imu_csv(:,1)<End_frame(i),:)
         size(ea_emg)
         size(ea_imu)
-        dlmwrite(output_path+"EatingAction/EA"+i+".csv",(ea_emg(:,2:end))','delimiter',',')
-        dlmwrite(output_path+"/EatingAction/EA"+i+".csv",(ea_imu(:,2:end))','delimiter',',','-append')
+        dlmwrite(output_path+"EatingAction/EA.csv",(ea_emg(:,2:end))','delimiter',',','-append')
+        dlmwrite(output_path+"/EatingAction/EA.csv",(ea_imu(:,2:end))','delimiter',',','-append')
         if i == 1
             nea_emg = emg_csv(emg_csv(:,1)<start_frame(i),:)
             nea_imu = imu_csv(imu_csv(:,1)<start_frame(i),:)
@@ -40,11 +40,8 @@ function SeperateEatingAndNonEatingAction(emg_file,imu_file,eating_frames_file,f
             nea_emg = emg_csv(emg_csv(:,1)>End_frame(i-1) & emg_csv(:,1)<start_frame(i),:)
             nea_imu = imu_csv(imu_csv(:,1)>End_frame(i-1) & imu_csv(:,1)<start_frame(i),:)
         end
-        dlmwrite(output_path+"/NonEatingAction/NEA"+i+".csv",(nea_emg(:,2:end))','delimiter',',')
-        dlmwrite(output_path+"/NonEatingAction/NEA"+i+".csv",(nea_imu(:,2:end))','delimiter',',','-append')
+        dlmwrite(output_path+"/NonEatingAction/NEA.csv",(nea_emg(:,2:end))','delimiter',',','-append');
+        dlmwrite(output_path+"/NonEatingAction/NEA.csv",(nea_imu(:,2:end))','delimiter',',','-append')
         
     end
 end
-
-%% 
-%
