@@ -1,13 +1,13 @@
 % Function which reads the csv file and perform moving average of the data
 % We reduce the number of features to the arbitary number of features M.
 
-time_series = [1 2 3 4 5 6 7 8 9 10]
+time_series = [1 2 3 4 5 6 7 8 9]
 disp(time_series)
 paa(time_series, 3)
+pause;
 
-
-eating_file = 'Vinoth/spoon/EatingAction/EA.csv';
-non_eating_file = 'Vinoth/spoon/NonEatingAction/NEA.csv'
+eating_file = 'Data/EatingAction/EA.csv';
+non_eating_file = 'Data/NonEatingAction/NEA.csv'
 
 paa_size = 5
 
@@ -18,15 +18,20 @@ paa_size = 5
 
 
 %Plot the data of the mean of the features
-for idx = 1:18
+for idx = 1:90
     name =  sprintf('PAA of Feature %d', idx);
-    eating_data = ea_paa_mat(:,(paa_size * (idx-1))+1:paa_size * idx);
-    eating_data = eating_data(:);
+   % eating_data = ea_paa_mat(:,(paa_size * (idx-1))+1:paa_size * idx);
+    %eating_data = eating_data(:);
     
-    non_eating_data = nea_paa_mat(:,(paa_size * (idx-1))+1:paa_size * idx);
-    non_eating_data = non_eating_data(:);
+    %non_eating_data = nea_paa_mat(:,(paa_size * (idx-1))+1:paa_size * idx);
+    %non_eating_data = non_eating_data(:);
     
-    plot([transpose(eating_data); transpose(non_eating_data)].');
+    %plot([transpose(eating_data); transpose(non_eating_data)].');
+    %plot([transpose(ea_paa_mat(1:2569, idx))].');
+    %pause;
+    %plot([].');
+    plot([transpose(ea_paa_mat(1:2569, idx)); transpose(nea_paa_mat(:, idx))].')
+    
     title(name)
     pause;
 end
@@ -39,14 +44,22 @@ thisLine = fgetl(fid);
 
 paa_values = [];
 
+idx = 0;
+
 while ischar(thisLine)
-    Z = textscan(thisLine,'%f','Delimiter',',')';
-    thisLine= fgetl(fid);
+    
+    fprintf("row %d\n", idx);
+    
+    if length(thisLine) >10
+    idx = idx+1;
+        Z = textscan(thisLine,'%f','Delimiter',',')';
     paa_values = [paa_values; paa(transpose(cell2mat(Z)), paa_size)];
+    end
+    thisLine= fgetl(fid);
 end
 
 fclose(fid);
-result_paa_matrix = reshape(paa_values, [40,18*paa_size]);
+result_paa_matrix = reshape(paa_values, [idx/18,18*paa_size]);
 end
 
 
@@ -67,7 +80,7 @@ else
    
     paa_values = size(paa_size);
  
-   segLen = ceil(N/ paa_size)
+   segLen = ceil(N/ paa_size);
    
    for i =1:paa_size
        left = segLen*(i-1) +1;
