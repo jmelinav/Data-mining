@@ -58,7 +58,7 @@ while ischar(thisLine)
         end
         fft_data = fft(transpose(cell2mat(Z)));
         fprintf("fft size - %d\n", size(fft_data,2));
-        fftdata = abs(fft(transpose(cell2mat(Z))));
+        fftdata = abs(dwt(transpose(cell2mat(Z))));
         fftdatasorted = sort(fftdata,'descend');
         %fprintf("powfft %d\n", fftdatasorted);
     paa_values = [paa_values; fftdatasorted(1:6)];
