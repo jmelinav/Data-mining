@@ -30,10 +30,15 @@ for idx = 1:90
     %plot([transpose(ea_paa_mat(1:2569, idx))].');
     %pause;
     %plot([].');
-    plot([transpose(ea_paa_mat(1:2569, idx)); transpose(nea_paa_mat(:, idx))].')
+    %plot([transpose(ea_paa_mat(1:2569, idx)); transpose(nea_paa_mat(:, idx))].');
+    h1 = plot(1:2569, transpose(ea_paa_mat(1:2569, idx))', 'b');     %first_y has 4 columns so h1 is length 4
+    hold on
+    h2 = plot(1:2569, transpose(nea_paa_mat(:, idx)), 'r');    %second_y has 3 columns so h2 is length 3
+    legend('Eating Action', 'Non eating action')
     
     title(name)
     pause;
+    hold off
 end
 
 
