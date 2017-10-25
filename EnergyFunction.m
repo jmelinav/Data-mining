@@ -5,8 +5,8 @@ energy = getEnergy([1 2 3 4 5]);
 fprintf("Energy - %d", energy);
 pause;
 
-[ea_mean_mat, ea_std_mat] = applyMeanAndStandardDeviation(eating_file);
-[nea_mean_mat, nea_std_mat] = applyMeanAndStandardDeviation(non_eating_file);
+[ea_mean_mat] = applyMeanAndStandardDeviation(eating_file);
+[nea_mean_mat] = applyMeanAndStandardDeviation(non_eating_file);
 
 %Plot the data of the mean of the features
 for idx = 1:18
@@ -42,7 +42,7 @@ end
 
 % Function which reads the csv file and performs mean and standard
 % deviation of the data and returns result as matrix (40x18) dimension
-function [result_mean_matrix, result_std_matrix]  = applyMeanAndStandardDeviation(file)
+function [result_mean_matrix]  = applyMeanAndStandardDeviation(file)
 fid = fopen(file);
 
 thisLine = fgetl(fid);
@@ -54,10 +54,10 @@ count = 0
 while ischar(thisLine)
     Z = textscan(thisLine,'%f','Delimiter',',')';
     count = count +1;
-    thisLine= fgetl(fid);
     %mean_matrix = [mean_matrix; mean(abs(diff(sign(cell2mat(Z)))))];
-    mean_matrix = [mean_matrix; rms(cell2mat(Z))];
-    std_matrix = [std_matrix; std(zscore(cell2mat(Z)))];
+    mean_matrix = [mean_matrix; getEnergy(cell2mat(Z))];
+ 
+    thisLine= fgetl(fid);
 end
 
 fclose(fid);
@@ -73,6 +73,6 @@ calc_energy = 0;
 for i = 1: size(time_series,2)
     fprintf("Val : %d\n" , time_series(i));
     calc_energy = calc_energy + time_series(i).^2;
-end   
+end 
 energy = calc_energy;
 end
