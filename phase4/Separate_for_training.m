@@ -38,10 +38,10 @@ function create_data_for_each_user(eatraining,eatesting,neatraining,neatesting,e
                 neatest = neating_file(c:end,:);
             end
             
-            eatrain = [eatrain zeros(size(eatrain,1),1)];
-            eatest = [eatest zeros(size(eatest,1),1)];
-            neatrain = [neatrain ones(size(neatrain,1),1)];
-            neatest = [neatest ones(size(neatest,1),1)];
+            eatrain = [eatrain ones(size(eatrain,1),1)];
+            eatest = [eatest ones(size(eatest,1),1)];
+            neatrain = [neatrain zeros(size(neatrain,1),1)];
+            neatest = [neatest zeros(size(neatest,1),1)];
             train_file = strcat(output_path ,user_file);
             train_file = strcat(train_file,"_train.csv")
             test_file = strcat(output_path ,user_file);
