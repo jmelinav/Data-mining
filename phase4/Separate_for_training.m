@@ -8,7 +8,7 @@ eating_file = csvread(eating_file_path);
 neating_file = csvread(neating_file_path);
 eating_start =1 
 neating_start =1 
-for i = 1: size(filename)1
+for i = 1: size(filename)
     user_file = strcat("user",num2str(floor((i-1)/2)))
     eatraining = floor(ea(i)*0.6)
     eatesting = int16(ea(i)-eatraining)
@@ -42,7 +42,7 @@ function create_data_for_each_user(eatraining,eatesting,neatraining,neatesting,e
             eatest = [eatest ones(size(eatest,1),1)];
             neatrain = [neatrain zeros(size(neatrain,1),1)];
             neatest = [neatest zeros(size(neatest,1),1)];
-            train_file = strcat(output_path ,user_file);
+            train_file = strcat(output_path ,"all");
             train_file = strcat(train_file,"_train.csv")
             test_file = strcat(output_path ,user_file);
             test_file = strcat(test_file,"_test.csv")
