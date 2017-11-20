@@ -44,12 +44,14 @@ function create_data_for_each_user(eatesting,neatesting,eating_start,neating_sta
             b = neating_start+neatesting
             
             row_count = size(eating_file,1)
+            row_count_nea = size(neating_file,1)
             if row_count>=a
                 eatest =  eating_file(eating_start:a,:);
             else
                 eatest = eating_file(eating_start:end,:);
             end
-            if row_count>=b
+            
+            if row_count_nea>=b
                 neatest = neating_file(neating_start:b,:);
             else
                 neatest = neating_file(neating_start:end,:);

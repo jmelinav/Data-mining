@@ -25,6 +25,7 @@ function create_data_for_each_user(eatraining,eatesting,neatraining,neatesting,e
             c = non_eating_start+neatraining
             d = non_eating_start+neatraining+neatesting
             row_count = size(eating_file,1)
+            row_count_nea = size(neating_file,1)
             eatrain = eating_file(eating_start:a,:);
             if row_count>=b
                 eatest = eating_file(a:b,:);
@@ -32,7 +33,8 @@ function create_data_for_each_user(eatraining,eatesting,neatraining,neatesting,e
                 eatest = eating_file(a:end,:);
             end
             neatrain = neating_file(non_eating_start:c,:);
-            if row_count>=d
+            
+            if row_count_nea>=d
                 neatest = neating_file(c:d,:);
             else
                 neatest = neating_file(c:end,:);

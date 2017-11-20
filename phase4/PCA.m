@@ -1,6 +1,7 @@
 clear
 data_path = './Data/';
-
+ea_file_path = strcat(data_path,'EA.csv')
+nea_file_path = strcat(data_path,'NEA.csv')
 mean_features = [1 2 4 5 6 7 8 9 10 13 18];
 ea_fft_path = strcat(data_path , 'EatingAction/ea_fft_feature.csv');
 nea_fft_path = strcat(data_path , 'NonEatingAction/nea_fft_feature.csv');
@@ -18,6 +19,8 @@ all_data = vertcat(ea_ftt,nea_fft)
 coeff = executePCA(all_data);
 ea_pca = ea_ftt*coeff;
 nea_pca = nea_fft*coeff;
+dlmwrite(ea_file_path,ea_pca,'delimiter',',','-append');
+dlmwrite(nea_file_path,nea_pca,'delimiter',',','-append');
 fprintf('%d\n',size(all_data));
 figure(1); clf;
 [v,d] = eig(all_data'*all_data);
