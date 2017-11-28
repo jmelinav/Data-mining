@@ -1,4 +1,3 @@
-dataset = load("output/all_train.csv");
 
 
 
@@ -61,21 +60,27 @@ pause;
 % disp(size(fpr_vec));
 
 % plot(tpr_vec(:,1), fpr_vec(:,1));
+
+%user_independent();
+clear();
+user_dependent_60_40();
+user_independent();
+
+function user_dependent_60_40()
+dataset = load("output/all_train.csv");
+
 train_data = dataset(:,1:12);
 disp(size(train_data));
 pause;
 train_label = dataset(:, 13);
 
-main(train_data, train_label);
-
-function main(train_data, train_label)
 dt_model = train_decision_tree(train_data, train_label);
 dt_result = test_for_user(dt_model);
 disp(" decision tree result");
 disp(dt_result );
 
 svm_model = train_svm(train_data, train_label);
-svm_result = test_for_user(dt_model);
+svm_result = test_for_user(svm_model);
 
 disp("svm result");
 disp(svm_result );
@@ -86,6 +91,36 @@ disp("NN result");
 disp(nn_result );
 
 end
+
+function user_independent()
+dataset = load("output_user_independent/all_train.csv");
+
+train_data = dataset(:,1:12);
+disp(size(train_data));
+pause;
+train_label = dataset(:, 13);
+
+dt_model = train_decision_tree(train_data, train_label);
+dt_result = test_for_user_independent(dt_model);
+disp("User independent -  decision tree result");
+disp(dt_result );
+
+svm_model = train_svm(train_data, train_label);
+svm_result = test_for_user_independent(svm_model);
+
+disp("User independent - svm result");
+disp(svm_result );
+
+nn_model = train_neural_net(train_data, train_label);
+nn_result = nn_test_for_user_independent(nn_model);
+
+disp("User independent - NN result");
+disp(nn_result );
+
+end
+
+
+
 
 function [result] =  nn_test_for_user(trained_model)
     % Test the accuracy metrics for each user data
@@ -103,6 +138,25 @@ function [result] =  nn_test_for_user(trained_model)
         result = [result ; row];
     end
 end
+
+
+function [result] =  nn_test_for_user_independent(trained_model)
+    % Test the accuracy metrics for each user data
+    result = [];
+    feature_count =12;
+    
+    for user  = 11: 33
+        test_set = load(sprintf("output_user_independent/user%d_test.csv", user-1));
+        [precision, recall, f1, AUC] = neural_network_calc_metrics(trained_model, test_set(:, 1:feature_count), test_set(:, feature_count+1));
+        
+        fprintf("User %d : precision=%f  recall=%f f1-score = %f AUC = %f\n", user, precision, recall, f1, AUC);
+        row = [precision recall f1 AUC];
+        disp(size(row));
+     
+        result = [result ; row];
+    end
+end
+
 
 
 function [precision, recall, f1, AUC] = neural_network_calc_metrics(trained_net, test_data, test_label)
@@ -149,7 +203,7 @@ function [result] =  test_for_user(trained_model)
     for user  = 1: 33
         test_set = load(sprintf("output/user%d_test.csv", user-1));
         predict_out = predict_output(trained_model, test_set(:, 1:feature_count));
-        [precision, recall, f1, AUC] = calcualte_metrics(predict_out, test_set(:, feature_count+1));
+        [precision, recall, f1, AUC] = calcualte_metrics(test_set(:, feature_count+1), predict_out');
         
         fprintf("User %d : precision=%f  recall=%f f1-score = %f AUC = %f\n", user, precision, recall, f1, AUC);
         row = [precision recall f1 AUC];
@@ -158,6 +212,26 @@ function [result] =  test_for_user(trained_model)
         result = [result ; row];
     end
 end
+
+function [result] =  test_for_user_independent(trained_model)
+    % Test the accuracy metrics for each user data
+    result = [];
+    feature_count =12;
+    
+    for user  = 11: 33
+        test_set = load(sprintf("output_user_independent/user%d_test.csv", user-1));
+        predict_out = predict_output(trained_model, test_set(:, 1:feature_count));
+        [precision, recall, f1, AUC] = calcualte_metrics(test_set(:, feature_count+1), predict_out');
+        
+        fprintf("User %d : precision=%f  recall=%f f1-score = %f AUC = %f\n", user, precision, recall, f1, AUC);
+        row = [precision recall f1 AUC];
+        disp(size(row));
+     
+        result = [result ; row];
+    end
+end
+
+
 
 function [pred_out] = predict_output(trained_model, test_data)
    pred_out = zeros(1, size(test_data,1));
@@ -201,7 +275,7 @@ for idx= 1: size(test_label, 1)
     end
 end
 
-fprintf("TP = %d  FN = %d  FP = %d  TN = %d", tp, fn, fp, tn);
+fprintf("TP = %d  FN = %d  FP = %d  TN = %d\n", tp, fn, fp, tn);
 
 precision = tp / (tp + fp);
 recall = tp / (tp + fn);
@@ -211,4 +285,6 @@ fpr = fp / (fp + tn);
 
 f1 = 2 * precision * recall / (precision + recall);
 [X,Y, T, AUC] = perfcurve(test_label, predict_out,1); 
+plot(X, Y);
+
 end
