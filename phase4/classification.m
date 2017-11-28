@@ -136,7 +136,7 @@ nn_result = nn_test_for_user_independent(nn_model);
 disp("User independent - NN result");
 disp(nn_result );
 
-A = 1:1:23;
+A = 11:1:33;
 A = A';
 matwithuser = [A dt_result];
 tempmat = horzcat(matwithuser, svm_result);
