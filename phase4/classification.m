@@ -91,14 +91,16 @@ nn_result = nn_test_for_user(nn_model);
 disp("NN result");
 disp(nn_result );
 
-
-temp = horzcat(dt_result, svm_result);
-finalmat = horzcat(temp, nn_result);
+A = 1:1:33;
+A = A';
+matwithuser = [A dt_result];
+tempmat = horzcat(matwithuser, svm_result);
+finalmat = horzcat(tempmat, nn_result);
 
 disp(finalmat)
 
-topheaders = {'DT','DT','DT','DT', 'SVM', 'SVM', 'SVM', 'SVM', 'ANN', 'ANN', 'ANN', 'ANN'};
-secondheader = {'Precision','Recall','F1 Score', 'AUC','Precision','Recall','F1 Score', 'AUC','Precision','Recall','F1 Score', 'AUC'};
+topheaders = {'User#','DT','DT','DT','DT', 'SVM', 'SVM', 'SVM', 'SVM', 'ANN', 'ANN', 'ANN', 'ANN'};
+secondheader = {'User#','Precision','Recall','F1 Score', 'AUC','Precision','Recall','F1 Score', 'AUC','Precision','Recall','F1 Score', 'AUC'};
 toptextHeader = strjoin(topheaders, ',');
 secondtextHeader = strjoin(secondheader, ',');
 user_dependant_file = 'user_dependant.csv';
@@ -134,11 +136,14 @@ nn_result = nn_test_for_user_independent(nn_model);
 disp("User independent - NN result");
 disp(nn_result );
 
-temp = horzcat(dt_result, svm_result);
-finalmat = horzcat(temp, nn_result);
+A = 1:1:23;
+A = A';
+matwithuser = [A dt_result];
+tempmat = horzcat(matwithuser, svm_result);
+finalmat = horzcat(tempmat, nn_result);
 
-topheaders = {'DT','DT','DT','DT', 'SVM', 'SVM', 'SVM', 'SVM', 'ANN', 'ANN', 'ANN', 'ANN'};
-secondheader = {'Precision','Recall','F1 Score', 'AUC','Precision','Recall','F1 Score', 'AUC','Precision','Recall','F1 Score', 'AUC'};
+topheaders = {'User#','DT','DT','DT','DT', 'SVM', 'SVM', 'SVM', 'SVM', 'ANN', 'ANN', 'ANN', 'ANN'};
+secondheader = {'User#','Precision','Recall','F1 Score', 'AUC','Precision','Recall','F1 Score', 'AUC','Precision','Recall','F1 Score', 'AUC'};
 toptextHeader = strjoin(topheaders, ',');
 secondtextHeader = strjoin(secondheader, ',');
 user_independant_file = 'user_independant.csv';
