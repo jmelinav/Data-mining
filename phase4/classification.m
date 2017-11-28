@@ -77,7 +77,7 @@ train_label = dataset(:, 13);
 dt_model = train_decision_tree(train_data, train_label);
 dt_result = test_for_user(dt_model);
 disp(" decision tree result");
-disp(dt_result );
+disp(dt_result);
 
 svm_model = train_svm(train_data, train_label);
 svm_result = test_for_user(svm_model);
@@ -85,11 +85,28 @@ svm_result = test_for_user(svm_model);
 disp("svm result");
 disp(svm_result );
 
+
 nn_model = train_neural_net(train_data, train_label);
 nn_result = nn_test_for_user(nn_model);
 disp("NN result");
 disp(nn_result );
 
+
+temp = horzcat(dt_result, svm_result);
+finalmat = horzcat(temp, nn_result);
+
+disp(finalmat)
+
+topheaders = {'DT','DT','DT','DT', 'SVM', 'SVM', 'SVM', 'SVM', 'ANN', 'ANN', 'ANN', 'ANN'};
+secondheader = {'Precision','Recall','F1 Score', 'AUC','Precision','Recall','F1 Score', 'AUC','Precision','Recall','F1 Score', 'AUC'};
+toptextHeader = strjoin(topheaders, ',');
+secondtextHeader = strjoin(secondheader, ',');
+user_dependant_file = 'user_dependant.csv';
+fid = fopen(user_dependant_file, 'w+'); 
+fprintf(fid,'%s\n',toptextHeader);
+fprintf(fid,'%s\n',secondtextHeader);
+fclose(fid);
+dlmwrite(user_dependant_file,finalmat,'delimiter',',','-append');
 end
 
 function user_independent()
@@ -116,6 +133,20 @@ nn_result = nn_test_for_user_independent(nn_model);
 
 disp("User independent - NN result");
 disp(nn_result );
+
+temp = horzcat(dt_result, svm_result);
+finalmat = horzcat(temp, nn_result);
+
+topheaders = {'DT','DT','DT','DT', 'SVM', 'SVM', 'SVM', 'SVM', 'ANN', 'ANN', 'ANN', 'ANN'};
+secondheader = {'Precision','Recall','F1 Score', 'AUC','Precision','Recall','F1 Score', 'AUC','Precision','Recall','F1 Score', 'AUC'};
+toptextHeader = strjoin(topheaders, ',');
+secondtextHeader = strjoin(secondheader, ',');
+user_independant_file = 'user_independant.csv';
+fid = fopen(user_independant_file, 'w+'); 
+fprintf(fid,'%s\n',toptextHeader);
+fprintf(fid,'%s\n',secondtextHeader);
+fclose(fid);
+dlmwrite(user_independant_file,finalmat,'delimiter',',','-append');
 
 end
 
