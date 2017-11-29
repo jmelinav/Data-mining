@@ -10,7 +10,7 @@ eating_start =1 ;
 neating_start =1;
 eatraining = 0;
 neatraining = 0;
-for i = 1: 10
+for i = 1: 20
     user_file = strcat("user",num2str(floor((i-1)/2)))
     eatraining = eatraining+ea(i);
     neatraining = neatraining + nea(i);
@@ -19,7 +19,7 @@ create_training_data(eatraining,neatraining,eating_file,neating_file,output_path
 
 eating_start =1 ;
 neating_start =1;
-for i = 11: size(filename)
+for i = 21: size(filename)
     user_file = strcat("user",num2str(floor((i-1)/2)))
     eatesting = ea(i)
     neatesting = nea(i)
